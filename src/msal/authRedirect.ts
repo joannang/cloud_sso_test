@@ -12,6 +12,11 @@ export const msalInstance = new PublicClientApplication(msalConfig);
 
 let accessToken = null;
 
+//sign up
+//sign in
+//password reset
+
+
 // 'when using the redirect flows, handleRedirectPromise should be run on every page load'
 
 export const handleRedirect = (testStore: TestStore) => {
@@ -104,23 +109,27 @@ export const selectAccount = (testStore: TestStore) => {
   }
 }
 
-export const signIn = () => {
-  (async () => {
-    const ipv4 = await publicIp.v4();
-    console.log(ipv4)
+const checkForWhitelistedIP = async () => {
+  const whiteListedAddresses = ['119.74.74.205', '222.164.133.232'];
+ 
+  const ipv4 = await publicIp.v4();
+  console.log(ipv4);
+ 
+  for (let ipAddress of whiteListedAddresses) {
+    if (ipAddress === ipv4) {
+      return true;
+    }
+  }
+  return false;
+}
 
-    //do post request to api server
-    axios.post('http://20.195.50.198/api/v1/ip', {
-      ipAddress: ipv4
-    }).then(res => {
-      console.log("success!")
-      console.log(res)
-    }).catch(err => {
-      console.log(err)
-    }) 
-
-    // msalInstance.loginRedirect(loginRequest);
-  })();
+export const signIn = async() => {
+  if (await checkForWhitelistedIP()) {
+    msalInstance.loginRedirect(loginRequest);
+  } else {
+    // error page 
+    // or return to home page with error msg
+  }
 };
 
 export const signOut = () => {
