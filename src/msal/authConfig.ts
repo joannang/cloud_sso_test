@@ -4,7 +4,7 @@ import { LogLevel } from '@azure/msal-browser'
 export const msalConfig = {
     auth: {
         clientId: "088e1c4a-6560-43db-aefc-871e7545adbe", // This is the ONLY mandatory field; everything else is optional.
-        authority: b2cPolicies.authorities.signUpSignIn.authority, // Choose sign-up/sign-in user-flow as your default.
+        authority: b2cPolicies.authorities.signIn.authority, // Choose sign-up/sign-in user-flow as your default.
         knownAuthorities: [b2cPolicies.authorityDomain], // You must identify your tenant's domain as a known authority.
         redirectUri: "https://localhost:3000/home", // You must register this URI on Azure Portal/App Registration. Defaults to "window.location.href".
         logoutUri: "httpss://localhost:3000/logout"
@@ -44,7 +44,7 @@ export const loginRequest = {
   // "https://devtinnolab.b2clogin.com/user.read",  // MICROSOFT GRAPH
   // "email", "profile", 
     scopes: ["https://devtinnolab.b2clogin.com/user.read", "openid", "offline_access"],
-    response_mode: "query",
+    response_mode: "fragment",
 
     /**POSSIBLE PARAMS */
     // authenticationScheme?: AuthenticationScheme;
