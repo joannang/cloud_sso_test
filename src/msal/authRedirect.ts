@@ -22,11 +22,12 @@ export const handleRedirect = (testStore: TestStore) => {
         console.log("handle redirect response")
         console.log(response)
         const idTokenClaims = response.idTokenClaims;
-        console.log( idTokenClaims)
+        console.log(idTokenClaims)
         // if (
         //   idTokenClaims["tfp"].toUpperCase() ===
         //   b2cPolicies.names.signUpSignIn.toUpperCase()
         // ) {
+        console.log('HELLO')
         handleResponse(response, testStore);
         // }
       }
@@ -105,23 +106,36 @@ export const selectAccount = (testStore: TestStore) => {
 }
 
 export const signIn = () => {
-  (async () => {
-    const ipv4 = await publicIp.v4();
-    console.log(ipv4)
+  // (async () => {
+  //   const ipv4 = await publicIp.v4();
+  //   console.log(ipv4)
 
-    //do post request to api server
-    axios.post('http://20.195.50.198/api/v1/ip', {
-      ipAddress: ipv4
-    }).then(res => {
-      console.log("success!")
-      console.log(res)
-    }).catch(err => {
-      console.log(err)
-    }) 
-
-    // msalInstance.loginRedirect(loginRequest);
-  })();
+  //   //do post request to api server
+  //   axios.post('http://20.195.50.198/api/v1/ip', {
+  //     ipAddress: ipv4
+  //   }).then(res => {
+  //     console.log("success!")
+  //     console.log(res)
+  //   }).catch(err => {
+  //     console.log(err)
+  //   }) 
+  // })();
+  msalInstance.loginRedirect(loginRequest);
 };
+
+const checkForWhitelistedIP = async () => {
+  const whiteListedAddresses = ['119.74.74.205', '222.164.133.232'];
+
+  const ipv4 = await publicIp.v4();
+  console.log(ipv4);
+
+  for (let ipAddress of whiteListedAddresses) {
+    if (ipAddress === ipv4) {
+      return true;
+    }
+  }
+  return false;
+}
 
 export const signOut = () => {
 
