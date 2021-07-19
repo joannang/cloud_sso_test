@@ -39,6 +39,10 @@ const Wallet: React.FC = () => {
     color: "#baebe1",
   };
 
+  const sliceString =(input: string) => {
+    return input.slice(0,26) + "..."
+  }
+
   return (
     <Observer
       render={() => (
@@ -80,7 +84,23 @@ const Wallet: React.FC = () => {
               }
             >
               <List itemLayout="horizontal">
-                <List.Item>
+              {
+                testStore.walletAddresses.map((address)=> (
+                  <List.Item>
+                    <List.Item.Meta
+                      title={"Address:"}
+                      description={sliceString(address)}
+                      avatar={<Button
+                        style={{ background: "#FFFF99", borderColor: "white" }}
+                        shape="circle"
+                      >
+                        {" "}
+                      </Button>}
+                    />
+                  </List.Item>
+                ))
+              }
+                {/* <List.Item>
                   <List.Item.Meta
                     title={"Address: "}
                     description={"0xffeb2ac156e8c53bf5b50af07..."}
@@ -126,7 +146,7 @@ const Wallet: React.FC = () => {
                       }
                     />
                   </List.Item>
-                )}
+                )} */}
               </List>
             </Card>
           </div>
@@ -134,8 +154,8 @@ const Wallet: React.FC = () => {
          <LinkModal/>
          <Modal title="Select Wallet"
           visible={modalOpen} onCancel={() => setModalOpen(false)}>
-            <Button onClick={connectToMEW}>MEW Wallet</Button>
-            <Button onClick={connectToCoinbaseWallet}>CB Wallet</Button>
+            <Button onClick={() => connectToMEW(testStore)}>MEW Wallet</Button>
+            <Button onClick={() => connectToCoinbaseWallet(testStore)}>CB Wallet</Button>
           </Modal>
         </Col>
       )}

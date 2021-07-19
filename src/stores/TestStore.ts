@@ -13,6 +13,7 @@ interface TestStore {
     loggedIn: boolean;
     testWalletAddress: string;
     modalOpen: boolean;
+    walletAddresses: string[];
 }
 
 
@@ -23,6 +24,8 @@ class TestStore {
     loggedIn = (this.homeAccountId || this.homeAccountId !== '') ? true : false; // if username not null or empty str, is logged in
     testWalletAddress = '';
     modalOpen = false;
+    walletAddresses = ["0xffeb2ac156e8c53bf5b50af07...", "0x66eb2ac156e8c53bfb50af07a..."]
+    
 
 
     constructor() {
@@ -31,11 +34,17 @@ class TestStore {
             username: observable,
             testWalletAddress: observable,
             modalOpen: observable,
+            walletAddresses: observable,
             setHomeAccountId: action,
             setUsername: action,
             setTestWalletAddress: action,
             setModalOpen: action,
+            setWalletAddresses: action,
         })
+    }
+
+    setWalletAddresses = (addresses: []) => {
+        this.walletAddresses = addresses;
     }
 
     setModalOpen = (open: boolean) => {

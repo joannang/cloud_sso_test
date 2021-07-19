@@ -1,3 +1,4 @@
+import TestStore from './stores/TestStore';
 import WalletLink from "walletlink";
 import MEWconnect from "@myetherwallet/mewconnect-web-client";
 import Web3 from "web3";
@@ -25,17 +26,23 @@ export const MewConnectProvider = MewConnect.makeWeb3Provider(
   true
 );
 
-export const connectToMEW = async () => {
+export const connectToMEW = async (testStore: TestStore) => {
   const accounts = await MewConnect.enable();
   web3.eth.defaultAccount = accounts[0];
+  if (web3.eth.defaultAccount !== null) {
+    testStore.walletAddresses.push(web3.eth.defaultAccount)
+  }
   console.log(web3.eth.defaultAccount);
 };
 
-export const connectToCoinbaseWallet = async () => {
+export const connectToCoinbaseWallet = async (testStore: TestStore) => {
   // Use eth_RequestAccounts
   ethereum.send("eth_requestAccounts").then(async (accounts: string[]) => {
     // Optionally, have the default account set for web3.js
     web3.eth.defaultAccount = accounts[0];
+    if (web3.eth.defaultAccount !== null) {
+      testStore.walletAddresses.push(web3.eth.defaultAccount)
+    }
 
     console.log(`Account Address: ${web3.eth.defaultAccount}`);
     //console.log(`Provider: ${web3.eth.currentProvider}`)
