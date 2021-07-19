@@ -20,7 +20,7 @@ const Wallet: React.FC = () => {
     setModalOpen(true)
   }
 
-  const colors = ["#FFFF99", "#dadada", "#baebe1", "black"]
+  const colors = ["#FFFF99", "#dadada", "#baebe1", "lightpink", "lightblue"]
 
   const data = [
     {
