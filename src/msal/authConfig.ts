@@ -62,5 +62,3 @@ export const loginRequest = {
     // extraQueryParameters?: StringDict;
     // nonce?: string;
 };
-
-// dont need tokenRequest cos not using it to call API atm

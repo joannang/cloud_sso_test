@@ -6,6 +6,7 @@
     "@ant-design/icons": "^4.6.2",
     "@azure/msal-browser": "^2.15.0",
     "@azure/msal-react": "^1.0.1",
+    "@myetherwallet/mewconnect-web-client": "^2.1.23-beta.9",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -50,6 +51,7 @@
     ]
   },
   "devDependencies": {
-    "@types/react-router-dom": "^5.1.7"
+    "@types/react-router-dom": "^5.1.7",
+    "node-pre-gyp": "0.12.0"
   }
 }

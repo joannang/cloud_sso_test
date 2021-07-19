@@ -1,21 +1,28 @@
 import {
   PublicClientApplication,
   AuthenticationResult,
+  InteractionRequiredAuthError
 } from "@azure/msal-browser";
 import { msalConfig, loginRequest } from "./authConfig";
 import b2cPolicies from "./policies";
 import TestStore from '../stores/TestStore'
 import publicIp from "public-ip";
 import axios from "axios";
+import MEWconnect from "@myetherwallet/mewconnect-web-client"
+import Web3 from "web3"
+
 
 export const msalInstance = new PublicClientApplication(msalConfig);
 
 let accessToken = null;
 
+let accountId = "";
+
 //sign up
 //sign in
 //password reset
 
+// export const mewConnecct = new MEWconnect.Provider([options])
 
 // 'when using the redirect flows, handleRedirectPromise should be run on every page load'
 
@@ -140,3 +147,39 @@ export const signOut = () => {
 
   msalInstance.logoutRedirect(logoutRequest);
 };
+
+
+// ACCESS TOKEN STUFF (have to do this in conjunction with a registered API)
+export function getTokenRedirect(request: any, testStore: TestStore) {
+
+  /**
+  * See here for more info on account retrieval: 
+  * https://github.com/AzureAD/microsoft-authentication-library-for-js/blob/dev/lib/msal-common/docs/Accounts.md
+  */
+  request.account = msalInstance.getAccountByHomeId(testStore.homeAccountId); 
+ 
+  /**
+   * 
+   */
+  return msalInstance.acquireTokenSilent(request)
+      .then((response) => {
+          // In case the response from B2C server has an empty accessToken field
+          // throw an error to initiate token acquisition
+          if (!response.accessToken || response.accessToken === "") {
+              throw new InteractionRequiredAuthError();
+          } else {
+              console.log("access_token acquired at: " + new Date().toString());
+              const accessToken = response.accessToken;
+              console.log("access token: " + accessToken)
+              // passTokenToApi();
+          }
+      }).catch(error => {
+          console.log("Silent token acquisition fails. Acquiring token using popup. \n", error);
+          if (error instanceof InteractionRequiredAuthError) {
+              // fallback to interaction when silent call fails
+              return msalInstance.acquireTokenRedirect(request);
+          } else {
+              console.log(error);   
+          }
+  });
+}
