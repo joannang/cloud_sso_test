@@ -20,6 +20,8 @@ const Wallet: React.FC = () => {
     setModalOpen(true)
   }
 
+  const colors = ["#FFFF99", "#dadada", "#baebe1", "black"]
+
   const data = [
     {
       title: "Address:",
@@ -85,13 +87,13 @@ const Wallet: React.FC = () => {
             >
               <List itemLayout="horizontal">
               {
-                testStore.walletAddresses.map((address)=> (
+                testStore.walletAddresses.map((address, index)=> (
                   <List.Item>
                     <List.Item.Meta
                       title={"Address:"}
                       description={sliceString(address)}
                       avatar={<Button
-                        style={{ background: "#FFFF99", borderColor: "white" }}
+                        style={{ background: colors[index], borderColor: "white" }}
                         shape="circle"
                       >
                         {" "}
