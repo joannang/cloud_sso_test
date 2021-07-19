@@ -9,6 +9,8 @@ import publicIp from "public-ip";
 import axios from "axios";
 
 import WalletLink from 'walletlink'
+//import { MewConnectConnector } from '@myetherwallet/mewconnect-connector'
+import MEWconnect from "@myetherwallet/mewconnect-web-client"
 import Web3 from 'web3'
 
 export const msalInstance = new PublicClientApplication(msalConfig);
@@ -29,9 +31,33 @@ export const walletLink = new WalletLink({
 
 // Initialize a Web3 Provider object
 export const ethereum = walletLink.makeWeb3Provider(ETH_JSONRPC_URL, CHAIN_ID)
-
 // Initialize a Web3 object
 export const web3 = new Web3(ethereum as any)
+
+
+export function ConnectToMewConnect() {
+  return new Promise(async (resolve, reject) => {
+
+    if (!MEWconnect.Provider.isConnected) {
+        const mewConnect = new MEWconnect.Provider({
+        chainId: CHAIN_ID,
+        rpcUrl: ETH_JSONRPC_URL,
+        noUrlCheck: true,
+      });
+      const provider = mewConnect.makeWeb3Provider()
+
+      mewConnect.on('disconnected', () => {
+      alert('MEWconnect Disconnected')
+      })
+      try {
+        await mewConnect.enable();
+        resolve(new Web3(provider));
+      } catch (e) {
+        reject(e);
+      }
+    }
+  });
+};
 
 //sign up
 //sign in
