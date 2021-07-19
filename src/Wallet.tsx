@@ -1,17 +1,24 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import { useStores } from "./stores/StoreProvider";
-import { Button, Card, Row, Col, Avatar, List } from "antd";
+import { Button, Card, Row, Col, Avatar, List, Modal } from "antd";
 import { EditOutlined, PlusOutlined } from "@ant-design/icons";
 import { Observer } from "mobx-react";
 import LinkModal from './LinkModal'
+import { connectToMEW, connectToCoinbaseWallet } from './walletSelect'
 
 const Wallet: React.FC = () => {
   const { testStore } = useStores();
 
+  const [modalOpen, setModalOpen] = useState(false)
+
   const linkWallet = () => {
       testStore.setModalOpen(true)
   };
+  
+  const handleClick = () => {
+    setModalOpen(true)
+  }
 
   const data = [
     {
@@ -36,6 +43,7 @@ const Wallet: React.FC = () => {
     <Observer
       render={() => (
         <Col style={{ width: "90%", marginLeft: "5%", marginTop: "10%" }}>
+          <Button onClick={handleClick}>Click me</Button>
           <Card
             title="Active Wallet"
             extra={
@@ -124,6 +132,11 @@ const Wallet: React.FC = () => {
           </div>
           {/* link modal */}
          <LinkModal/>
+         <Modal title="Select Wallet"
+          visible={modalOpen} onCancel={() => setModalOpen(false)}>
+            <Button onClick={connectToMEW}>MEW Wallet</Button>
+            <Button onClick={connectToCoinbaseWallet}>CB Wallet</Button>
+          </Modal>
         </Col>
       )}
     />

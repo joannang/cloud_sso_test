@@ -8,56 +8,9 @@ import TestStore from '../stores/TestStore'
 import publicIp from "public-ip";
 import axios from "axios";
 
-import WalletLink from 'walletlink'
-//import { MewConnectConnector } from '@myetherwallet/mewconnect-connector'
-import MEWconnect from "@myetherwallet/mewconnect-web-client"
-import Web3 from 'web3'
-
 export const msalInstance = new PublicClientApplication(msalConfig);
 
 let accessToken = null;
-
-const APP_NAME = 'My Test App'
-const APP_LOGO_URL = 'https://global-uploads.webflow.com/5e157547d6f791d34ea4e2bf/6087f2b060c7a92408bac811_logo.svg'
-const ETH_JSONRPC_URL = 'http://127.0.0.1:8545/'
-const CHAIN_ID = 31337
-
-// Initialize WalletLink
-export const walletLink = new WalletLink({
-  appName: APP_NAME,
-  appLogoUrl: APP_LOGO_URL,
-  darkMode: false
-})
-
-// Initialize a Web3 Provider object
-export const ethereum = walletLink.makeWeb3Provider(ETH_JSONRPC_URL, CHAIN_ID)
-// Initialize a Web3 object
-export const web3 = new Web3(ethereum as any)
-
-
-export function ConnectToMewConnect() {
-  return new Promise(async (resolve, reject) => {
-
-    if (!MEWconnect.Provider.isConnected) {
-        const mewConnect = new MEWconnect.Provider({
-        chainId: CHAIN_ID,
-        rpcUrl: ETH_JSONRPC_URL,
-        noUrlCheck: true,
-      });
-      const provider = mewConnect.makeWeb3Provider()
-
-      mewConnect.on('disconnected', () => {
-      alert('MEWconnect Disconnected')
-      })
-      try {
-        await mewConnect.enable();
-        resolve(new Web3(provider));
-      } catch (e) {
-        reject(e);
-      }
-    }
-  });
-};
 
 //sign up
 //sign in
@@ -173,28 +126,9 @@ const checkForWhitelistedIP = async () => {
 }
 
 export const signIn = async () => {
-    // Use eth_RequestAccounts
-    ethereum.send('eth_requestAccounts').then(async (accounts: string[]) => {
-
-    // Optionally, have the default account set for web3.js
-    web3.eth.defaultAccount = accounts[0]
-
-    console.log(`Account Address: ${web3.eth.defaultAccount}`)
-    //console.log(`Provider: ${web3.eth.currentProvider}`)
-
-    console.log('Chain ID:')
-    await web3.eth.net.getId().then(console.log);
-  
-    console.log('Balance 0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266:')
-    await web3.eth.getBalance("0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266").then(console.log);
-
-    console.log(`Balance ${web3.eth.defaultAccount}:`)
-    await web3.eth.getBalance(web3.eth.defaultAccount).then(console.log);
-
-    console.log(`Is Connected: ${ethereum.isConnected()}`);
-  })
+  msalInstance.loginRedirect(loginRequest);
   // if (await checkForWhitelistedIP()) {
-  //   msalInstance.loginRedirect(loginRequest);
+    
   // } else {
   //   // error page 
   //   // or return to home page with error msg
