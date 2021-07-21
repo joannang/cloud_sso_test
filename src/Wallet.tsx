@@ -75,7 +75,7 @@ const Wallet: React.FC = () => {
               </List.Item>
             </List>
           </Card>
-          &nbsp;
+          &nbsp; 
           <div>
             <Card
               title="My Wallets"
